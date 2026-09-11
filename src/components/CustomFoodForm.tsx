@@ -1,4 +1,8 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
 
 interface CustomFoodFormProps {
   onAdd: (name: string, calories: number, protein: number, carbs: number, fat: number) => void
@@ -24,74 +28,71 @@ export default function CustomFoodForm({ onAdd }: CustomFoodFormProps) {
     setFat('')
   }
 
-  const inputClass =
-    'rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2 text-sm'
-
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3 rounded-lg border border-gray-200 dark:border-gray-700 p-3">
-      <label className="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300">
-        Food name
-        <input
-          type="text"
-          placeholder="e.g. Homemade Sandwich"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          className={inputClass}
-        />
-      </label>
-      <div className="grid grid-cols-2 gap-3">
-        <label className="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300">
-          Calories (kcal)
-          <input
-            type="number"
-            min={0}
-            placeholder="0"
-            value={calories}
-            onChange={(e) => setCalories(e.target.value)}
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300">
-          Protein (g)
-          <input
-            type="number"
-            min={0}
-            placeholder="0"
-            value={protein}
-            onChange={(e) => setProtein(e.target.value)}
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300">
-          Carbs (g)
-          <input
-            type="number"
-            min={0}
-            placeholder="0"
-            value={carbs}
-            onChange={(e) => setCarbs(e.target.value)}
-            className={inputClass}
-          />
-        </label>
-        <label className="flex flex-col gap-1 text-xs text-gray-600 dark:text-gray-300">
-          Fat (g)
-          <input
-            type="number"
-            min={0}
-            placeholder="0"
-            value={fat}
-            onChange={(e) => setFat(e.target.value)}
-            className={inputClass}
-          />
-        </label>
-      </div>
-      <button
-        type="submit"
-        disabled={!isValid}
-        className="w-full py-2 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700 disabled:opacity-50"
-      >
-        Add to Log
-      </button>
-    </form>
+    <Card size="sm">
+      <CardContent>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+          <div className="flex flex-col gap-1.5">
+            <Label htmlFor="custom-name">Food name</Label>
+            <Input
+              id="custom-name"
+              type="text"
+              placeholder="e.g. Homemade Sandwich"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="custom-calories">Calories (kcal)</Label>
+              <Input
+                id="custom-calories"
+                type="number"
+                min={0}
+                placeholder="0"
+                value={calories}
+                onChange={(e) => setCalories(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="custom-protein">Protein (g)</Label>
+              <Input
+                id="custom-protein"
+                type="number"
+                min={0}
+                placeholder="0"
+                value={protein}
+                onChange={(e) => setProtein(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="custom-carbs">Carbs (g)</Label>
+              <Input
+                id="custom-carbs"
+                type="number"
+                min={0}
+                placeholder="0"
+                value={carbs}
+                onChange={(e) => setCarbs(e.target.value)}
+              />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label htmlFor="custom-fat">Fat (g)</Label>
+              <Input
+                id="custom-fat"
+                type="number"
+                min={0}
+                placeholder="0"
+                value={fat}
+                onChange={(e) => setFat(e.target.value)}
+              />
+            </div>
+          </div>
+          <Button type="submit" disabled={!isValid} className="w-full">
+            Add to Log
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   )
 }

@@ -94,6 +94,20 @@ export const FOODS: Food[] = [
   { id: 'gyoza', name: 'Gyoza', category: 'Japanese', servingDesc: '6 pieces', calories: 300, protein: 12, carbs: 30, fat: 14, fistEquivalent: 1 },
   { id: 'tonkatsu-set', name: 'Tonkatsu Rice Set', category: 'Japanese', servingDesc: '1 set', calories: 700, protein: 30, carbs: 80, fat: 28, fistEquivalent: 2.5 },
   { id: 'yakisoba', name: 'Yakisoba', category: 'Japanese', servingDesc: '1 plate', calories: 550, protein: 18, carbs: 70, fat: 20, fistEquivalent: 2 },
+
+  // Bakery & Pastries
+  { id: 'sausage-bun', name: 'Sausage Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 320, protein: 12, carbs: 35, fat: 14, fistEquivalent: 1 },
+  { id: 'egg-tart', name: 'Egg Tart', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 200, protein: 4, carbs: 18, fat: 13, fistEquivalent: 0.5 },
+  { id: 'pineapple-bun', name: 'Pineapple Bun (Bolo Bao)', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 350, protein: 7, carbs: 50, fat: 13, fistEquivalent: 1 },
+  { id: 'chicken-floss-bun', name: 'Chicken Floss Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 280, protein: 10, carbs: 35, fat: 11, fistEquivalent: 1 },
+  { id: 'custard-bun', name: 'Custard Bun (Liu Sha Bao)', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 220, protein: 5, carbs: 30, fat: 9, fistEquivalent: 1 },
+  { id: 'red-bean-bun', name: 'Red Bean Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 250, protein: 6, carbs: 42, fat: 6, fistEquivalent: 1 },
+  { id: 'coconut-bun', name: 'Coconut Bun (Cocktail Bun)', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 280, protein: 6, carbs: 38, fat: 12, fistEquivalent: 1 },
+  { id: 'chocolate-bun', name: 'Chocolate Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 320, protein: 7, carbs: 42, fat: 14, fistEquivalent: 1 },
+  { id: 'cream-bun', name: 'Fresh Cream Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 300, protein: 6, carbs: 35, fat: 15, fistEquivalent: 1 },
+  { id: 'curry-chicken-bun', name: 'Curry Chicken Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 300, protein: 10, carbs: 35, fat: 12, fistEquivalent: 1 },
+  { id: 'butter-bun', name: 'Butter Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 200, protein: 5, carbs: 30, fat: 6, fistEquivalent: 1 },
+  { id: 'kaya-butter-bun', name: 'Kaya Butter Bun', category: 'Bakery & Pastries', servingDesc: '1 piece', calories: 280, protein: 5, carbs: 38, fat: 11, fistEquivalent: 1 },
 ]
 
 export const FOOD_CATEGORIES = Array.from(new Set(FOODS.map((f) => f.category)))

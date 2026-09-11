@@ -1,6 +1,10 @@
 import { useMemo } from 'react'
-import { currentMealSlot, suggestNextMeal } from '../lib/suggest'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Switch } from '@/components/ui/switch'
+import { suggestNextMeal } from '../lib/suggest'
 import type { Food, LogEntry, Targets } from '../types'
+import CalorieGauge from './CalorieGauge'
 import ProgressBar from './ProgressBar'
 import SuggestionPanel from './SuggestionPanel'
 
@@ -42,7 +46,6 @@ export default function Dashboard({
     fat: Math.max(targets.fat - consumed.fat, 0),
   }
 
-  const mealSlot = currentMealSlot()
   const suggestions = useMemo(() => suggestNextMeal(remaining, 3), [remaining])
 
   const today = new Date().toLocaleDateString('en-SG', {
@@ -54,73 +57,68 @@ export default function Dashboard({
   return (
     <div className="max-w-md mx-auto p-4 sm:p-6 flex flex-col gap-5">
       <div>
-        <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Today</h1>
-        <p className="text-sm text-gray-500 dark:text-gray-400">{today}</p>
+        <h1 className="text-xl font-semibold text-foreground">Today</h1>
+        <p className="text-sm text-muted-foreground">{today}</p>
       </div>
 
-      <div className="flex flex-col gap-3 rounded-lg border border-gray-200 dark:border-gray-700 p-4">
-        <ProgressBar label="Calories" consumed={consumed.calories} target={targets.calories} unit="kcal" colorClass="bg-emerald-500" />
-        <ProgressBar label="Protein" consumed={consumed.protein} target={targets.protein} unit="g" colorClass="bg-blue-500" />
-        <ProgressBar label="Carbs" consumed={consumed.carbs} target={targets.carbs} unit="g" colorClass="bg-amber-500" />
-        <ProgressBar label="Fat" consumed={consumed.fat} target={targets.fat} unit="g" colorClass="bg-purple-500" />
-      </div>
+      <Card>
+        <CardContent className="flex flex-col items-center">
+          <CalorieGauge consumed={consumed.calories} target={targets.calories} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardContent className="flex flex-col gap-3">
+          <ProgressBar label="Protein" consumed={consumed.protein} target={targets.protein} unit="g" indicatorClassName="bg-blue-500" />
+          <ProgressBar label="Carbs" consumed={consumed.carbs} target={targets.carbs} unit="g" indicatorClassName="bg-amber-500" />
+          <ProgressBar label="Fat" consumed={consumed.fat} target={targets.fat} unit="g" indicatorClassName="bg-purple-500" />
+        </CardContent>
+      </Card>
 
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Suggest next meal</span>
-        <button
-          onClick={() => onToggleSuggestions(!suggestionsEnabled)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${
-            suggestionsEnabled ? 'bg-emerald-600' : 'bg-gray-300 dark:bg-gray-600'
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform ${
-              suggestionsEnabled ? 'translate-x-5' : ''
-            }`}
-          />
-        </button>
+        <span className="text-sm font-medium text-foreground">Suggest next meal</span>
+        <Switch checked={suggestionsEnabled} onCheckedChange={onToggleSuggestions} />
       </div>
 
       {suggestionsEnabled && (
-        <SuggestionPanel mealSlot={mealSlot} suggestions={suggestions} remaining={remaining} onAdd={onAddSuggested} />
+        <SuggestionPanel suggestions={suggestions} remaining={remaining} onAdd={onAddSuggested} />
       )}
 
-      <div>
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Logged today</p>
-        {logs.length === 0 ? (
-          <p className="text-sm text-gray-400 dark:text-gray-500">Nothing logged yet — head to Log Food.</p>
-        ) : (
-          <div className="flex flex-col gap-2">
-            {logs.map((entry) => (
-              <div
-                key={entry.id}
-                className="flex items-center justify-between gap-2 rounded-md border border-gray-200 dark:border-gray-700 px-3 py-2"
-              >
-                <div>
-                  <p className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {entry.name}
-                    {entry.servingMultiplier !== 1 ? ` (${entry.servingMultiplier}x)` : ''}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
-                    {entry.mealSlot} · {entry.calories} kcal · P {entry.protein}g · C {entry.carbs}g · F {entry.fat}g
-                  </p>
-                  {entry.addOns && entry.addOns.length > 0 && (
-                    <p className="text-xs text-emerald-600 dark:text-emerald-400">
-                      + {entry.addOns.join(', ')}
-                    </p>
-                  )}
-                </div>
-                <button
-                  onClick={() => onRemoveEntry(entry.id)}
-                  className="shrink-0 text-xs text-red-600 dark:text-red-400 font-medium px-2 py-1"
+      <Card>
+        <CardHeader>
+          <CardTitle>Logged today</CardTitle>
+        </CardHeader>
+        <CardContent>
+          {logs.length === 0 ? (
+            <p className="text-sm text-muted-foreground">Nothing logged yet — head to Log Food.</p>
+          ) : (
+            <div className="flex flex-col gap-2">
+              {logs.map((entry) => (
+                <div
+                  key={entry.id}
+                  className="flex items-center justify-between gap-2 rounded-md border border-border px-3 py-2"
                 >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {entry.name}
+                      {entry.servingMultiplier !== 1 ? ` (${entry.servingMultiplier}x)` : ''}
+                    </p>
+                    <p className="text-xs text-muted-foreground">
+                      {entry.mealSlot} · {entry.calories} kcal · P {entry.protein}g · C {entry.carbs}g · F {entry.fat}g
+                    </p>
+                    {entry.addOns && entry.addOns.length > 0 && (
+                      <p className="text-xs text-primary">+ {entry.addOns.join(', ')}</p>
+                    )}
+                  </div>
+                  <Button variant="destructive" size="xs" onClick={() => onRemoveEntry(entry.id)}>
+                    Remove
+                  </Button>
+                </div>
+              ))}
+            </div>
+          )}
+        </CardContent>
+      </Card>
     </div>
   )
 }

@@ -1,4 +1,10 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Input } from '@/components/ui/input'
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Switch } from '@/components/ui/switch'
 import { ACTIVITY_LABELS, calcTargets, GOAL_LABELS } from '../lib/tdee'
 import type { ActivityLevel, Goal, Sex, Targets, UserProfile } from '../types'
 
@@ -62,123 +68,134 @@ export default function Settings({
     })
   }
 
-  const inputClass =
-    'rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-3 py-2'
-
   return (
     <div className="max-w-md mx-auto p-4 sm:p-6 flex flex-col gap-6">
-      <h1 className="text-xl font-semibold text-gray-900 dark:text-gray-100">Settings</h1>
+      <h1 className="text-xl font-semibold text-foreground">Settings</h1>
 
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-          Suggest next meal (default)
-        </span>
-        <button
-          onClick={() => onToggleSuggestions(!suggestionsEnabled)}
-          className={`relative w-11 h-6 rounded-full transition-colors ${
-            suggestionsEnabled ? 'bg-emerald-600' : 'bg-gray-300 dark:bg-gray-600'
-          }`}
-        >
-          <span
-            className={`absolute top-0.5 left-0.5 w-5 h-5 rounded-full bg-white transition-transform ${
-              suggestionsEnabled ? 'translate-x-5' : ''
-            }`}
-          />
-        </button>
+        <span className="text-sm font-medium text-foreground">Suggest next meal (default)</span>
+        <Switch checked={suggestionsEnabled} onCheckedChange={onToggleSuggestions} />
       </div>
 
-      <form onSubmit={handleRecalculate} className="flex flex-col gap-3">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Recalculate from profile</p>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Age
-            <input type="number" value={age} onChange={(e) => setAge(e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Sex
-            <select value={sex} onChange={(e) => setSex(e.target.value as Sex)} className={inputClass}>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-            </select>
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Weight (kg)
-            <input
-              type="number"
-              value={weightKg}
-              onChange={(e) => setWeightKg(e.target.value)}
-              className={inputClass}
-            />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Height (cm)
-            <input
-              type="number"
-              value={heightCm}
-              onChange={(e) => setHeightCm(e.target.value)}
-              className={inputClass}
-            />
-          </label>
-        </div>
-        <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-          Activity level
-          <select
-            value={activityLevel}
-            onChange={(e) => setActivityLevel(e.target.value as ActivityLevel)}
-            className={inputClass}
-          >
-            {ACTIVITY_LEVELS.map((level) => (
-              <option key={level} value={level}>
-                {ACTIVITY_LABELS[level]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-          Goal
-          <select value={goal} onChange={(e) => setGoal(e.target.value as Goal)} className={inputClass}>
-            {GOALS.map((g) => (
-              <option key={g} value={g}>
-                {GOAL_LABELS[g]}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button
-          type="submit"
-          className="w-full py-2.5 rounded-md bg-emerald-600 text-white font-medium hover:bg-emerald-700"
-        >
-          Recalculate Targets
-        </button>
-      </form>
+      <Card>
+        <CardHeader>
+          <CardTitle>Recalculate from profile</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleRecalculate} className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="settings-age">Age</Label>
+                <Input id="settings-age" type="number" value={age} onChange={(e) => setAge(e.target.value)} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label>Sex</Label>
+                <Select value={sex} onValueChange={(v) => setSex(v as Sex)}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">Male</SelectItem>
+                    <SelectItem value="female">Female</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="settings-weight">Weight (kg)</Label>
+                <Input
+                  id="settings-weight"
+                  type="number"
+                  value={weightKg}
+                  onChange={(e) => setWeightKg(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="settings-height">Height (cm)</Label>
+                <Input
+                  id="settings-height"
+                  type="number"
+                  value={heightCm}
+                  onChange={(e) => setHeightCm(e.target.value)}
+                />
+              </div>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label>Activity level</Label>
+              <Select value={activityLevel} onValueChange={(v) => setActivityLevel(v as ActivityLevel)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {ACTIVITY_LEVELS.map((level) => (
+                    <SelectItem key={level} value={level}>
+                      {ACTIVITY_LABELS[level]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <Label>Goal</Label>
+              <Select value={goal} onValueChange={(v) => setGoal(v as Goal)}>
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {GOALS.map((g) => (
+                    <SelectItem key={g} value={g}>
+                      {GOAL_LABELS[g]}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button type="submit" className="w-full">
+              Recalculate Targets
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
 
-      <form onSubmit={handleSaveTargets} className="flex flex-col gap-3">
-        <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Edit targets directly</p>
-        <div className="grid grid-cols-2 gap-3">
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Calories (kcal)
-            <input type="number" value={calories} onChange={(e) => setCalories(e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Protein (g)
-            <input type="number" value={protein} onChange={(e) => setProtein(e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Carbs (g)
-            <input type="number" value={carbs} onChange={(e) => setCarbs(e.target.value)} className={inputClass} />
-          </label>
-          <label className="flex flex-col gap-1 text-sm text-gray-700 dark:text-gray-300">
-            Fat (g)
-            <input type="number" value={fat} onChange={(e) => setFat(e.target.value)} className={inputClass} />
-          </label>
-        </div>
-        <button
-          type="submit"
-          className="w-full py-2.5 rounded-md border border-emerald-600 text-emerald-600 font-medium hover:bg-emerald-50 dark:hover:bg-emerald-950/40"
-        >
-          Save Targets
-        </button>
-      </form>
+      <Card>
+        <CardHeader>
+          <CardTitle>Edit targets directly</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSaveTargets} className="flex flex-col gap-3">
+            <div className="grid grid-cols-2 gap-3">
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="target-calories">Calories (kcal)</Label>
+                <Input
+                  id="target-calories"
+                  type="number"
+                  value={calories}
+                  onChange={(e) => setCalories(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="target-protein">Protein (g)</Label>
+                <Input
+                  id="target-protein"
+                  type="number"
+                  value={protein}
+                  onChange={(e) => setProtein(e.target.value)}
+                />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="target-carbs">Carbs (g)</Label>
+                <Input id="target-carbs" type="number" value={carbs} onChange={(e) => setCarbs(e.target.value)} />
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <Label htmlFor="target-fat">Fat (g)</Label>
+                <Input id="target-fat" type="number" value={fat} onChange={(e) => setFat(e.target.value)} />
+              </div>
+            </div>
+            <Button type="submit" variant="outline" className="w-full">
+              Save Targets
+            </Button>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   )
 }

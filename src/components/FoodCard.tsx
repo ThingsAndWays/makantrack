@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { Toggle } from '@/components/ui/toggle'
 import { ADD_ONS } from '../data/addOns'
 import type { AddOn, Food } from '../types'
 
@@ -37,83 +40,84 @@ export default function FoodCard({ food, onAdd }: FoodCardProps) {
   }
 
   return (
-    <div className="rounded-lg border border-gray-200 dark:border-gray-700 p-3 flex flex-col gap-2">
-      <div>
-        <p className="font-medium text-gray-900 dark:text-gray-100">{food.name}</p>
-        <p className="text-xs text-gray-500 dark:text-gray-400">
-          {food.servingDesc} ≈ {formatFists(food.fistEquivalent)} ✊
+    <Card size="sm">
+      <CardContent className="flex flex-col gap-2">
+        <div>
+          <p className="font-medium text-foreground">{food.name}</p>
+          <p className="text-xs text-muted-foreground">
+            {food.servingDesc} ≈ {formatFists(food.fistEquivalent)} ✊
+          </p>
+        </div>
+        <p className="text-xs text-muted-foreground">
+          {Math.round(totalCalories)} kcal · P {Math.round(totalProtein)}g · C {Math.round(totalCarbs)}g · F{' '}
+          {Math.round(totalFat)}g
         </p>
-      </div>
-      <p className="text-xs text-gray-600 dark:text-gray-300">
-        {Math.round(totalCalories)} kcal · P {Math.round(totalProtein)}g · C {Math.round(totalCarbs)}g · F{' '}
-        {Math.round(totalFat)}g
-      </p>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 dark:text-gray-400">Your portion:</span>
-          <div className="flex items-center rounded-md border border-gray-300 dark:border-gray-600 overflow-hidden">
-            <button
-              type="button"
-              onClick={() => adjust(-FIST_STEP)}
-              disabled={fists <= MIN_FISTS}
-              className="px-2 py-1 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-30"
-              aria-label="Fewer fists"
-            >
-              −
-            </button>
-            <span className="px-2 py-1 text-sm font-medium text-gray-900 dark:text-gray-100 min-w-[4.5rem] text-center">
-              {formatFists(fists)} ✊
-            </span>
-            <button
-              type="button"
-              onClick={() => adjust(FIST_STEP)}
-              disabled={fists >= MAX_FISTS}
-              className="px-2 py-1 text-sm text-gray-600 dark:text-gray-300 disabled:opacity-30"
-              aria-label="More fists"
-            >
-              +
-            </button>
-          </div>
-        </div>
-        <button
-          onClick={() => onAdd(food, multiplier, selectedAddOns)}
-          className="px-3 py-1.5 rounded-md bg-emerald-600 text-white text-sm font-medium hover:bg-emerald-700"
-        >
-          Add
-        </button>
-      </div>
-
-      <button
-        type="button"
-        onClick={() => setShowExtras((prev) => !prev)}
-        className="self-start text-xs font-medium text-emerald-700 dark:text-emerald-400"
-      >
-        {showExtras ? '− Hide extras' : `+ Add extras${selectedAddOns.length > 0 ? ` (${selectedAddOns.length})` : ''}`}
-      </button>
-
-      {showExtras && (
-        <div className="flex flex-wrap gap-1.5 pt-1">
-          {ADD_ONS.map((addOn) => {
-            const selected = selectedAddOnIds.has(addOn.id)
-            return (
-              <button
-                key={addOn.id}
+        <div className="flex items-center justify-between gap-2">
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground">Your portion:</span>
+            <div className="flex items-center rounded-md border border-input overflow-hidden">
+              <Button
                 type="button"
-                onClick={() => toggleAddOn(addOn.id)}
-                className={`px-2 py-1 rounded-full text-xs border ${
-                  selected
-                    ? 'bg-emerald-600 text-white border-emerald-600'
-                    : 'bg-white dark:bg-gray-800 text-gray-600 dark:text-gray-300 border-gray-300 dark:border-gray-600'
-                }`}
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => adjust(-FIST_STEP)}
+                disabled={fists <= MIN_FISTS}
+                aria-label="Fewer fists"
               >
-                {selected ? '✓ ' : '+ '}
-                {addOn.name} ({addOn.calories} kcal)
-              </button>
-            )
-          })}
+                −
+              </Button>
+              <span className="px-2 text-sm font-medium text-foreground min-w-[4.5rem] text-center">
+                {formatFists(fists)} ✊
+              </span>
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-sm"
+                onClick={() => adjust(FIST_STEP)}
+                disabled={fists >= MAX_FISTS}
+                aria-label="More fists"
+              >
+                +
+              </Button>
+            </div>
+          </div>
+          <Button size="sm" onClick={() => onAdd(food, multiplier, selectedAddOns)}>
+            Add
+          </Button>
         </div>
-      )}
-    </div>
+
+        <Button
+          type="button"
+          variant="link"
+          size="sm"
+          onClick={() => setShowExtras((prev) => !prev)}
+          className="self-start h-auto p-0"
+        >
+          {showExtras ? '− Hide extras' : `+ Add extras${selectedAddOns.length > 0 ? ` (${selectedAddOns.length})` : ''}`}
+        </Button>
+
+        {showExtras && (
+          <div className="flex flex-wrap gap-1.5 pt-1">
+            {ADD_ONS.map((addOn) => {
+              const selected = selectedAddOnIds.has(addOn.id)
+              return (
+                <Toggle
+                  key={addOn.id}
+                  pressed={selected}
+                  onPressedChange={() => toggleAddOn(addOn.id)}
+                  variant="outline"
+                  size="sm"
+                  className="h-auto rounded-full px-2.5 py-1 aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary"
+                >
+                  {selected ? '✓ ' : '+ '}
+                  {addOn.name} ({addOn.calories} kcal)
+                </Toggle>
+              )
+            })}
+          </div>
+        )}
+      </CardContent>
+    </Card>
   )
 }
 

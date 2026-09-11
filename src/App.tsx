@@ -98,14 +98,14 @@ export default function App() {
 
   if (!onboarded || !profile || !targets) {
     return (
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-950">
+      <div className="min-h-screen bg-background">
         <Onboarding onComplete={handleOnboardingComplete} />
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-950 pb-16 sm:pb-0">
+    <div className="min-h-screen bg-background pb-16 sm:pb-0">
       <TabBar active={tab} onChange={setTab} />
       {tab === 'dashboard' && (
         <Dashboard
