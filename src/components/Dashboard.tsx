@@ -1,3 +1,4 @@
+import { Sparkles, Trash2, UtensilsCrossed } from 'lucide-react'
 import { useMemo } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -76,7 +77,10 @@ export default function Dashboard({
       </Card>
 
       <div className="flex items-center justify-between">
-        <span className="text-sm font-medium text-foreground">Suggest next meal</span>
+        <span className="flex items-center gap-1.5 text-sm font-medium text-foreground">
+          <Sparkles className="size-4 text-primary" />
+          Suggest next meal
+        </span>
         <Switch checked={suggestionsEnabled} onCheckedChange={onToggleSuggestions} />
       </div>
 
@@ -90,7 +94,10 @@ export default function Dashboard({
         </CardHeader>
         <CardContent>
           {logs.length === 0 ? (
-            <p className="text-sm text-muted-foreground">Nothing logged yet — head to Log Food.</p>
+            <div className="flex flex-col items-center gap-2 py-6 text-center">
+              <UtensilsCrossed className="size-8 text-muted-foreground/50" />
+              <p className="text-sm text-muted-foreground">Nothing logged yet — head to Log Food.</p>
+            </div>
           ) : (
             <div className="flex flex-col gap-2">
               {logs.map((entry) => (
@@ -110,8 +117,8 @@ export default function Dashboard({
                       <p className="text-xs text-primary">+ {entry.addOns.join(', ')}</p>
                     )}
                   </div>
-                  <Button variant="destructive" size="xs" onClick={() => onRemoveEntry(entry.id)}>
-                    Remove
+                  <Button variant="destructive" size="icon-xs" onClick={() => onRemoveEntry(entry.id)} aria-label="Remove entry">
+                    <Trash2 className="size-3.5" />
                   </Button>
                 </div>
               ))}

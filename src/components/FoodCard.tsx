@@ -1,3 +1,4 @@
+import { Check, ChevronDown, ChevronUp, Minus, Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -64,7 +65,7 @@ export default function FoodCard({ food, onAdd }: FoodCardProps) {
                 disabled={fists <= MIN_FISTS}
                 aria-label="Fewer fists"
               >
-                −
+                <Minus className="size-3.5" />
               </Button>
               <span className="px-2 text-sm font-medium text-foreground min-w-[4.5rem] text-center">
                 {formatFists(fists)} ✊
@@ -77,11 +78,12 @@ export default function FoodCard({ food, onAdd }: FoodCardProps) {
                 disabled={fists >= MAX_FISTS}
                 aria-label="More fists"
               >
-                +
+                <Plus className="size-3.5" />
               </Button>
             </div>
           </div>
           <Button size="sm" onClick={() => onAdd(food, multiplier, selectedAddOns)}>
+            <Plus className="size-3.5" />
             Add
           </Button>
         </div>
@@ -91,9 +93,10 @@ export default function FoodCard({ food, onAdd }: FoodCardProps) {
           variant="link"
           size="sm"
           onClick={() => setShowExtras((prev) => !prev)}
-          className="self-start h-auto p-0"
+          className="self-start h-auto p-0 gap-1"
         >
-          {showExtras ? '− Hide extras' : `+ Add extras${selectedAddOns.length > 0 ? ` (${selectedAddOns.length})` : ''}`}
+          {showExtras ? <ChevronUp className="size-3.5" /> : <ChevronDown className="size-3.5" />}
+          Add extras{selectedAddOns.length > 0 ? ` (${selectedAddOns.length})` : ''}
         </Button>
 
         {showExtras && (
@@ -107,9 +110,9 @@ export default function FoodCard({ food, onAdd }: FoodCardProps) {
                   onPressedChange={() => toggleAddOn(addOn.id)}
                   variant="outline"
                   size="sm"
-                  className="h-auto rounded-full px-2.5 py-1 aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary"
+                  className="h-auto rounded-full px-2.5 py-1 gap-1 aria-pressed:bg-primary aria-pressed:text-primary-foreground aria-pressed:border-primary"
                 >
-                  {selected ? '✓ ' : '+ '}
+                  {selected ? <Check className="size-3" /> : <Plus className="size-3" />}
                   {addOn.name} ({addOn.calories} kcal)
                 </Toggle>
               )

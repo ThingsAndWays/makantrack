@@ -1,3 +1,4 @@
+import { Plus } from 'lucide-react'
 import { useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
@@ -89,6 +90,7 @@ export default function CustomFoodForm({ onAdd }: CustomFoodFormProps) {
             </div>
           </div>
           <Button type="submit" disabled={!isValid} className="w-full">
+            <Plus className="size-3.5" />
             Add to Log
           </Button>
         </form>

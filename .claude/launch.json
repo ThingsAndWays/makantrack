@@ -4,7 +4,7 @@
     {
       "name": "makantrack",
       "runtimeExecutable": "/bin/zsh",
-      "runtimeArgs": ["-lc", "npm run dev"],
+      "runtimeArgs": ["-lc", "npm run dev -- --host"],
       "port": 5173
     }
   ]

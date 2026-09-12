@@ -1,3 +1,4 @@
+import { Plus, Sparkles } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -14,7 +15,10 @@ export default function SuggestionPanel({ suggestions, remaining, onAdd }: Sugge
 
   return (
     <Alert className="border-primary/30 bg-primary/5">
-      <AlertTitle className="text-primary">Suggested next makan</AlertTitle>
+      <AlertTitle className="text-primary flex items-center gap-1.5">
+        <Sparkles className="size-4" />
+        Suggested next makan
+      </AlertTitle>
       {budgetExhausted && (
         <AlertDescription>You're at or over your calorie target — these are the lightest options.</AlertDescription>
       )}
@@ -28,6 +32,7 @@ export default function SuggestionPanel({ suggestions, remaining, onAdd }: Sugge
               </p>
             </div>
             <Button size="xs" onClick={() => onAdd(food)} className="shrink-0">
+              <Plus className="size-3.5" />
               Add
             </Button>
           </Card>
